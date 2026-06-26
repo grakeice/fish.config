@@ -1,18 +1,8 @@
-set uname_m (uname -m)
-
-set -x ARCH $uname_m
-
 set -x EDITOR nvim
 
 # Homebrew
 if status is-interactive
-    # Commands to run in interactive sessions can go here
-    # PATH
-    if test $uname_m = arm64
-        fish_add_path /opt/homebrew/bin
-    else if test $uname_m = x86_64
-        fish_add_path /usr/local/bin
-    end
+    fish_add_path /opt/homebrew/bin
 end
 
 # setup Cargo
