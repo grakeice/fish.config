@@ -2,14 +2,26 @@ set -x EDITOR nvim
 
 # Homebrew
 if status is-interactive
-    fish_add_path /opt/homebrew/bin
+    /opt/homebrew/bin/brew shellenv | source
+
+    # gnu packages
+    set -l gnu_packages gawk gnu-sed coreutils findutils grep
+    for pkg in $gnu_packages
+        fish_add_path -g /opt/homebrew/opt/$pkg/libexec/gnubin
+        set -gx MANPATH "/opt/homebrew/opt/$pkg/libexec/gnuman" $MANPATH ""
+    end
+    fish_add_path -g /opt/homebrew/opt/diffutils/bin
+    set -gx MANPATH /opt/homebrew/opt/diffutils/share/man $MANPATH ""
+
+    # container
+    fish_add_path -g /opt/homebrew/opt/container/bin
 end
 
 # setup Cargo
 set -gx RUSTUP_HOME $HOME/.rustup
 set -gx CARGO_HOME $HOME/.cargo
-fish_add_path $CARGO_HOME/bin
-fish_add_path $RUSTUP_HOME
+fish_add_path -g $CARGO_HOME/bin
+fish_add_path -g $RUSTUP_HOME
 
 # yazi alias
 function y
@@ -147,14 +159,14 @@ abbr -a c --command docker compose
 
 # pnpm
 set -gx PNPM_HOME "$HOME/Library/pnpm"
-fish_add_path "$PNPM_HOME/bin"
+fish_add_path -g "$PNPM_HOME/bin"
 # pnpm end
 
 # Added by Antigravity CLI installer
-fish_add_path "$HOME/.local/bin"
+fish_add_path -g "$HOME/.local/bin"
 
 # Added by Antigravity IDE
-fish_add_path "$HOME/.antigravity-ide/antigravity-ide/bin"
+fish_add_path -g "$HOME/.antigravity-ide/antigravity-ide/bin"
 
 abbr -a agyide antigravity-ide
 
